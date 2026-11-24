@@ -1,4 +1,3 @@
-const fs = require("fs");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
@@ -17,6 +16,20 @@ const ORIGENES = (process.env.ORIGEN_PERMITIDO || "")
 app.use(cors({ origin: ORIGENES })); // solo estas páginas pueden usar la API
 app.use(express.json()); // convierte el cuerpo de la petición a objeto JS
 
+const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("Conectado a MongoDB Atlas"))
+    .catch(err => console.error("Error de MongoDB:", err));
+
+const Producto = mongoose.model("Producto", new mongoose.Schema({
+    nombre: { type: String, required: true },
+    precio: { type: Number, required: true },
+    stock: { type: Number, required: true}
+}, {
+    toJSON: { virtuals: true }
+}));
+
 function requiereToken(req, res, next) {
     if (req.get("x-api-key") !== process.env.API_KEY) {
         return res.status(401).json({ error: "Token inválido o ausente" });
@@ -25,9 +38,6 @@ function requiereToken(req, res, next) {
 }
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// Datos en memoria (en P3 se pueden pasar a una base de datos)
-const archivo = "./productos.json";
 
 function cargarProductos() {
     if (fs.existsSync(archivo)) {
@@ -52,25 +62,29 @@ app.get("/", (req, res) => {
 
 
 // GET
-app.get("/api/productos", (req, res) => {
+app.get("/api/productos", async (req, res) => {
     const { buscar } = req.query;
 
     if (buscar) {
-        const filtrados = productos.filter(p =>
-            p.nombre.toLowerCase().includes(buscar.toLowerCase())
-        );
+        const filtrados = await Producto.find({
+            nombre: { $regex: buscar, $options: "i" }
+        });
         return res.status(200).json(filtrados);
     }
-    res.status(200).json(productos);
+    const lista = await Producto.find();
+    res.status(200).json(lista);
 });
 
-app.get("/api/productos/:id", (req, res) => {
-    const id = Number(req.params.id);
-    const producto = productos.find(p => p.id === id);
-    if (!producto) {
-    return res.status(404).json({ error: `No existe el producto ${id}` });
+app.get("/api/productos/:id", async (req, res) => {
+    try {
+        const producto = await Producto.findById(req.params.id);
+        if (!producto) {
+            return res.status(404).json({ error: `No existe el producto ${req.params.id}` });
+        }
+        res.status(200).json(producto);
+    } catch {
+        res.status(404).json({ error: `No existe el producto ${req.params.id}` })
     }
-    res.status(200).json(producto);
 });
 
 // POST
@@ -82,42 +96,42 @@ if (!Number.isInteger(datos.stock) || datos.stock < 0) errores.push("stock debe 
 return errores;
 }
 
-app.post("/api/productos", requiereToken, (req, res) => {
+app.post("/api/productos", requiereToken, async (req, res) => {
     const errores = validar(req.body);
     if (errores.length > 0) {
         return res.status(400).json({ errores });
     }
-    const nuevo = { id: siguienteId++, ...req.body };
-    productos.push(nuevo);
-    guardarProductos();
+    const nuevo = await Producto.create(req.body);
     res.status(201).json(nuevo);
 });
 
 // PUT
-app.put("/api/productos/:id", requiereToken, (req, res) => {
-    const id = Number(req.params.id);
-    const indice = productos.findIndex(p => p.id === id);
-    if (indice === -1) return res.status(404).json({ error: `No existe el producto
-    ${id}` });
-
+app.put("/api/productos/:id", requiereToken, async (req, res) => {
     const errores = validar(req.body);
     if (errores.length > 0) return res.status(400).json({ errores });
 
-    productos[indice] = { id, ...req.body };
-    guardarProductos();
-    res.status(200).json(productos[indice]);
+    try{
+        const actualizado = await Producto.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+        if (!actualizado) return res.status(404).json({ error: `No existe el producto ${req.params.id}` });
+        res.status(200).json({ error: `No existe el producto ${req.params.id}` });
+    } catch {
+        res.status(404).json({ error: `No existe el producto ${req.params.id}` });
+    }
 });
 
 // DELETE
-app.delete("/api/productos/:id", requiereToken, (req, res) => {
-    const id = Number(req.params.id);
-    const existe = productos.some(p => p.id === id);
-    if (!existe) return res.status(404).json({ error: `No existe el producto ${id}`
-    });
-
-    productos = productos.filter(p => p.id !== id);
-    guardarProductos();
-    res.status(204).send();
+app.delete("/api/productos/:id", requiereToken, async (req, res) => {
+    try {
+        const eliminado = await Producto.findByIdAndDelete(req.params.id);
+        if (!eliminado) return res.status(404).json({ error: `No existe el producto ${req.params.id}` });
+        res.status(204).send();
+    } catch {
+        res.status(404).json({ error: `No existe el producto ${req.params.id}` });
+    }
 });
 
 app.get("/api/salud", (req, res) => {
