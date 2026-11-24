@@ -120,6 +120,10 @@ app.delete("/api/productos/:id", requiereToken, (req, res) => {
     res.status(204).send();
 });
 
+app.get("/api/salud", (req, res) => {
+    res.json({ estado: "ok" });
+});
+
 // Ruta no encontrada (siempre al final)
 app.use((req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 
