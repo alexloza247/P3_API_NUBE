@@ -1,0 +1,182 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "P3 Productos",
+    "collectionId": "72bcc825-7082-42a1-a5a9-962e213cb91a",
+    "dateExported": "2026-11-24T02:19:53.168Z",
+    "version": "1.4",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "e617406f-7404-4f5d-a472-e8afb93ea90f",
+            "colId": "72bcc825-7082-42a1-a5a9-962e213cb91a",
+            "containerId": "",
+            "name": "1",
+            "url": "http://localhost:3000/api/productos",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2026-11-24T01:42:55.146Z",
+            "modified": "2026-11-24T01:42:55.146Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "*/*",
+                    "isDisabled": true
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ]
+        },
+        {
+            "_id": "342666c4-ffeb-4ce0-a2d8-b727037338d6",
+            "colId": "72bcc825-7082-42a1-a5a9-962e213cb91a",
+            "containerId": "",
+            "name": "2",
+            "url": "http://localhost:3000/api/productos",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2026-11-24T01:43:46.737Z",
+            "modified": "2026-11-24T01:43:46.737Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "*/*",
+                    "isDisabled": true
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": [
+                    "{",
+                    "  \"nombre\": \"Monitor 24 pulgadas\",",
+                    "  \"precio\": 2500,",
+                    "  \"stock\": 5",
+                    "}"
+                ],
+                "form": []
+            }
+        },
+        {
+            "_id": "35e666b8-0ccd-4f0b-9c59-bb516fb871c0",
+            "colId": "72bcc825-7082-42a1-a5a9-962e213cb91a",
+            "containerId": "",
+            "name": "3",
+            "url": "http://localhost:3000/api/productos",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2026-11-24T01:46:34.109Z",
+            "modified": "2026-11-24T01:46:34.109Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "*/*",
+                    "isDisabled": true
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                },
+                {
+                    "name": "x-api-key",
+                    "value": "clave-equivocada"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": [
+                    "{",
+                    "  \"nombre\": \"Monitor 24 pulgadas\",",
+                    "  \"precio\": 2500,",
+                    "  \"stock\": 5",
+                    "}"
+                ],
+                "form": []
+            }
+        },
+        {
+            "_id": "0bf24657-0c49-477c-9558-72e3b6b11154",
+            "colId": "72bcc825-7082-42a1-a5a9-962e213cb91a",
+            "containerId": "",
+            "name": "4",
+            "url": "http://localhost:3000/api/productos",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2026-11-24T01:48:08.114Z",
+            "modified": "2026-11-24T01:48:08.114Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "*/*",
+                    "isDisabled": true
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                },
+                {
+                    "name": "x-api-key",
+                    "value": "holaMundo67"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": [
+                    "{",
+                    "  \"nombre\": \"Monitor 24 pulgadas\",",
+                    "  \"precio\": 2500,",
+                    "  \"stock\": 5",
+                    "}"
+                ],
+                "form": []
+            }
+        },
+        {
+            "_id": "c78fc2a4-498a-40af-8f1a-59aedc0e2483",
+            "colId": "72bcc825-7082-42a1-a5a9-962e213cb91a",
+            "containerId": "",
+            "name": "5",
+            "url": "http://localhost:3000/api/productos/4",
+            "method": "DELETE",
+            "sortNum": 70000,
+            "created": "2026-11-24T02:13:03.743Z",
+            "modified": "2026-11-24T02:13:03.743Z",
+            "headers": [
+                {
+                    "name": "Accept",
+                    "value": "*/*",
+                    "isDisabled": true
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.com)",
+                    "isDisabled": true
+                },
+                {
+                    "name": "x-api-key",
+                    "value": "holaMundo67"
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": [
+                    "{",
+                    "  \"nombre\": \"Monitor 24 pulgadas\",",
+                    "  \"precio\": 2500,",
+                    "  \"stock\": 5",
+                    "}"
+                ],
+                "form": []
+            }
+        }
+    ],
+    "ref": "f4TPEy8OauLN5YYLVOwI7-6JSX4AJJX4FZmzZX_Xr-QfICIlY4qNZQGJg1KbKBpkA-ine92vTPim0Yf5Ch-SaA"
+}

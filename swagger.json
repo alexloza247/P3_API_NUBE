@@ -1,0 +1,157 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Productos",
+    "version": "1.0.0",
+    "description": "API REST de productos con operaciones CRUD"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/productos": {
+      "get": {
+        "summary": "Listar todos los productos",
+        "parameters": [
+          {
+            "name": "buscar",
+            "in": "query",
+            "required": false,
+            "description": "Filtrar productos por nombre",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Arreglo de productos"
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear un producto",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductoInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Objeto creado"
+          },
+          "400": {
+            "description": "Error de validación en los datos"
+          }
+        }
+      }
+    },
+    "/api/productos/{id}": {
+      "get": {
+        "summary": "Ver un producto por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Objeto del producto"
+          },
+          "404": {
+            "description": "Producto no encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualizar un producto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductoInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Objeto actualizado"
+          },
+          "400": {
+            "description": "Error de validación"
+          },
+          "404": {
+            "description": "Producto no encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar un producto",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Eliminado sin contenido"
+          },
+          "404": {
+            "description": "Producto no encontrado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProductoInput": {
+        "type": "object",
+        "required": ["nombre", "precio", "stock"],
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "example": "Monitor"
+          },
+          "precio": {
+            "type": "number",
+            "example": 2500
+          },
+          "stock": {
+            "type": "integer",
+            "example": 5
+          }
+        }
+      }
+    }
+  }
+}
